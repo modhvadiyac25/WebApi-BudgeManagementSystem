@@ -20,6 +20,7 @@ namespace WebApi_BudgeManagementSystem.Models
             this.o_expense = new HashSet<o_expense>();
             this.o_income = new HashSet<o_income>();
             this.trasactions = new HashSet<trasaction>();
+            
         }
     
         public int uid { get; set; }
