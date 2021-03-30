@@ -22,13 +22,13 @@ namespace WebApi_BudgeManagementSystem.Models
             this.trasactions = new HashSet<trasaction>();
             
         }
-    
-        public int uid { get; set; }
+            public int uid { get; set; }
         public string fname { get; set; }
         public string lname { get; set; }
         public string email { get; set; }
         public string mno { get; set; }
         public string password { get; set; }
+
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<o_expense> o_expense { get; set; }

@@ -11,6 +11,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
     public class WebApiController : ApiController
     {
         BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
+
         
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetData()
@@ -18,6 +19,22 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             List<user> list = budgetManagerEntities.users.ToList();
             return Ok(list);
-        }            
+        }
+
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult GetIncomeCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<income> list = budgetManagerEntities.incomes.ToList();
+            return Ok(list);
+        }
+        
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult GetExpenseCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<expense> list = budgetManagerEntities.expenses.ToList();
+            return Ok(list);
+        }
     }
 }
