@@ -8,24 +8,16 @@ using WebApi_BudgeManagementSystem.Models;
 
 namespace WebApi_BudgeManagementSystem.Controllers
 {
-    public class WebApiController : ApiController
+    public class LoginController : ApiController
     {
         BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
-        
+
         [System.Web.Http.HttpGet]
-        public IHttpActionResult GetData()
+        public IHttpActionResult UserLogin(string email, string password)
         {
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
-            List<user> list = budgetManagerEntities.users.ToList();
-            return Ok(list);
-        }
-
-        [System.Web.Http.HttpPost]
-        public IHttpActionResult Register(user u)
-        {
-            budgetManagerEntities.users.Add(u);
-            budgetManagerEntities.SaveChanges();
-            return Ok();
+            user data = budgetManagerEntities.users.Where(x => x.email.Equals(email) && x.password.Equals(password)).SingleOrDefault();
+            return Ok(data);
         }
     }
 }
