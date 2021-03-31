@@ -16,11 +16,15 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                @Html.ActionLink("Budge Management System", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li>@Html.ActionLink("Home", "Index", "Home", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Add Income", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Add Expance", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Add Your Own Category", "Index", "Help", new { area = "" }, null)</li>
+                    <li>@Html.ActionLink("Logout", "Index", "Help", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
                 </ul>
             </div>
@@ -32,8 +36,7 @@
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
-    </div>
-
+    </div> 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
     @RenderSection("scripts", required: false)

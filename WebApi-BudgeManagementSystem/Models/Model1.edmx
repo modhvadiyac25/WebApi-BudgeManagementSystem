@@ -1,0 +1,325 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="BudgetManagerModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="expense">
+          <Key>
+            <PropertyRef Name="expid" />
+          </Key>
+          <Property Name="expid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="exp_cat" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="income">
+          <Key>
+            <PropertyRef Name="incid" />
+          </Key>
+          <Property Name="incid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="inc_cat" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="o_expense">
+          <Key>
+            <PropertyRef Name="oexp_Id" />
+          </Key>
+          <Property Name="oexp_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oexp_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="uid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="o_income">
+          <Key>
+            <PropertyRef Name="oinc_Id" />
+          </Key>
+          <Property Name="oinc_Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="oinc_name" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="uid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="trasaction">
+          <Key>
+            <PropertyRef Name="tid" />
+          </Key>
+          <Property Name="tid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="tdate" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="ttime" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="t_cat" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="tot_inc" Type="int" Nullable="false" />
+          <Property Name="tot_exp" Type="int" Nullable="false" />
+          <Property Name="uid" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="users">
+          <Key>
+            <PropertyRef Name="uid" />
+          </Key>
+          <Property Name="uid" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fname" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="lname" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="email" Type="nchar" MaxLength="50" Nullable="false" />
+          <Property Name="mno" Type="nchar" MaxLength="20" Nullable="false" />
+          <Property Name="password" Type="nchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_o_expense_To_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="o_expense" Type="Self.o_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="o_expense">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_o_income_To_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="o_income" Type="Self.o_income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="o_income">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trasaction_To_users">
+          <End Role="users" Type="Self.users" Multiplicity="1" />
+          <End Role="trasaction" Type="Self.trasaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="trasaction">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BudgetManagerModelStoreContainer">
+          <EntitySet Name="expense" EntityType="Self.expense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="income" EntityType="Self.income" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="o_expense" EntityType="Self.o_expense" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="o_income" EntityType="Self.o_income" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="trasaction" EntityType="Self.trasaction" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="users" EntityType="Self.users" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_o_expense_To_users" Association="Self.FK_o_expense_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="o_expense" EntitySet="o_expense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_o_income_To_users" Association="Self.FK_o_income_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="o_income" EntitySet="o_income" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trasaction_To_users" Association="Self.FK_trasaction_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="trasaction" EntitySet="trasaction" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="BudgetManagerModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="expense">
+          <Key>
+            <PropertyRef Name="expid" />
+          </Key>
+          <Property Name="expid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="exp_cat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="income">
+          <Key>
+            <PropertyRef Name="incid" />
+          </Key>
+          <Property Name="incid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="inc_cat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+        </EntityType>
+        <EntityType Name="o_expense">
+          <Key>
+            <PropertyRef Name="oexp_Id" />
+          </Key>
+          <Property Name="oexp_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="oexp_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.FK_o_expense_To_users" FromRole="o_expense" ToRole="users" />
+        </EntityType>
+        <EntityType Name="o_income">
+          <Key>
+            <PropertyRef Name="oinc_Id" />
+          </Key>
+          <Property Name="oinc_Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="oinc_name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="uid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.FK_o_income_To_users" FromRole="o_income" ToRole="users" />
+        </EntityType>
+        <EntityType Name="trasaction">
+          <Key>
+            <PropertyRef Name="tid" />
+          </Key>
+          <Property Name="tid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="tdate" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="ttime" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="t_cat" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+          <Property Name="tot_inc" Type="Int32" Nullable="false" />
+          <Property Name="tot_exp" Type="Int32" Nullable="false" />
+          <Property Name="uid" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="user" Relationship="Self.FK_trasaction_To_users" FromRole="trasaction" ToRole="users" />
+        </EntityType>
+        <EntityType Name="user">
+          <Key>
+            <PropertyRef Name="uid" />
+          </Key>
+          <Property Name="uid" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fname" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="lname" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="email" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="mno" Type="String" MaxLength="20" FixedLength="true" Unicode="true" Nullable="false" />
+          <Property Name="password" Type="String" MaxLength="50" FixedLength="true" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="o_expense" Relationship="Self.FK_o_expense_To_users" FromRole="users" ToRole="o_expense" />
+          <NavigationProperty Name="o_income" Relationship="Self.FK_o_income_To_users" FromRole="users" ToRole="o_income" />
+          <NavigationProperty Name="trasactions" Relationship="Self.FK_trasaction_To_users" FromRole="users" ToRole="trasaction" />
+        </EntityType>
+        <Association Name="FK_o_expense_To_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="o_expense" Type="Self.o_expense" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="o_expense">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_o_income_To_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="o_income" Type="Self.o_income" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="o_income">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_trasaction_To_users">
+          <End Role="users" Type="Self.user" Multiplicity="1" />
+          <End Role="trasaction" Type="Self.trasaction" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="users">
+              <PropertyRef Name="uid" />
+            </Principal>
+            <Dependent Role="trasaction">
+              <PropertyRef Name="uid" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="BudgetManagerEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="expenses" EntityType="Self.expense" />
+          <EntitySet Name="incomes" EntityType="Self.income" />
+          <EntitySet Name="o_expense" EntityType="Self.o_expense" />
+          <EntitySet Name="o_income" EntityType="Self.o_income" />
+          <EntitySet Name="trasactions" EntityType="Self.trasaction" />
+          <EntitySet Name="users" EntityType="Self.user" />
+          <AssociationSet Name="FK_o_expense_To_users" Association="Self.FK_o_expense_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="o_expense" EntitySet="o_expense" />
+          </AssociationSet>
+          <AssociationSet Name="FK_o_income_To_users" Association="Self.FK_o_income_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="o_income" EntitySet="o_income" />
+          </AssociationSet>
+          <AssociationSet Name="FK_trasaction_To_users" Association="Self.FK_trasaction_To_users">
+            <End Role="users" EntitySet="users" />
+            <End Role="trasaction" EntitySet="trasactions" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="BudgetManagerModelStoreContainer" CdmEntityContainer="BudgetManagerEntities">
+          <EntitySetMapping Name="expenses">
+            <EntityTypeMapping TypeName="BudgetManagerModel.expense">
+              <MappingFragment StoreEntitySet="expense">
+                <ScalarProperty Name="expid" ColumnName="expid" />
+                <ScalarProperty Name="exp_cat" ColumnName="exp_cat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="incomes">
+            <EntityTypeMapping TypeName="BudgetManagerModel.income">
+              <MappingFragment StoreEntitySet="income">
+                <ScalarProperty Name="incid" ColumnName="incid" />
+                <ScalarProperty Name="inc_cat" ColumnName="inc_cat" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="o_expense">
+            <EntityTypeMapping TypeName="BudgetManagerModel.o_expense">
+              <MappingFragment StoreEntitySet="o_expense">
+                <ScalarProperty Name="oexp_Id" ColumnName="oexp_Id" />
+                <ScalarProperty Name="oexp_name" ColumnName="oexp_name" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="o_income">
+            <EntityTypeMapping TypeName="BudgetManagerModel.o_income">
+              <MappingFragment StoreEntitySet="o_income">
+                <ScalarProperty Name="oinc_Id" ColumnName="oinc_Id" />
+                <ScalarProperty Name="oinc_name" ColumnName="oinc_name" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="trasactions">
+            <EntityTypeMapping TypeName="BudgetManagerModel.trasaction">
+              <MappingFragment StoreEntitySet="trasaction">
+                <ScalarProperty Name="tid" ColumnName="tid" />
+                <ScalarProperty Name="tdate" ColumnName="tdate" />
+                <ScalarProperty Name="ttime" ColumnName="ttime" />
+                <ScalarProperty Name="t_cat" ColumnName="t_cat" />
+                <ScalarProperty Name="tot_inc" ColumnName="tot_inc" />
+                <ScalarProperty Name="tot_exp" ColumnName="tot_exp" />
+                <ScalarProperty Name="uid" ColumnName="uid" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="users">
+            <EntityTypeMapping TypeName="BudgetManagerModel.user">
+              <MappingFragment StoreEntitySet="users">
+                <ScalarProperty Name="uid" ColumnName="uid" />
+                <ScalarProperty Name="fname" ColumnName="fname" />
+                <ScalarProperty Name="lname" ColumnName="lname" />
+                <ScalarProperty Name="email" ColumnName="email" />
+                <ScalarProperty Name="mno" ColumnName="mno" />
+                <ScalarProperty Name="password" ColumnName="password" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
