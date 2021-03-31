@@ -21,6 +21,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             return Ok(list);
         }
 
+ 
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetIncomeCategory()
         {
@@ -35,6 +36,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             List<expense> list = budgetManagerEntities.expenses.ToList();
             return Ok(list);
+ 
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult Register(user u)
+        {
+            budgetManagerEntities.users.Add(u);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+ 
         }
     }
 }
