@@ -112,31 +112,6 @@ namespace WebApi_BudgeManagementSystem.Controllers
             return View();
         }
 
-        public ActionResult Display()
-        {
-            List<user> list = new List<user>();
-            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/GetData");
-            var consume = hc.GetAsync("GetData");
-            try
-            {
-                consume.Wait();
-            }
-            catch (AggregateException e)
-            {
-                Console.WriteLine(e);
-            }
-
-            var test = consume.Result;
-
-            if (test.IsSuccessStatusCode)
-            {
-                var display = test.Content.ReadAsAsync<List<user>>();
-                list = display.Result;
-            }
-
-            return View(list);
-        }
-
         [HttpGet]
         public ActionResult SendData()
         {
@@ -165,13 +140,54 @@ namespace WebApi_BudgeManagementSystem.Controllers
 
         public ActionResult Login(string email, string password)
         {
-            hc.BaseAddress = new Uri("https://localhost:44320/Api/Login/UserLogin");
+            string uri = "https://localhost:44320/api/webApi/GetData";
+            IEnumerable<UserViewModel> list = null; 
+            hc.BaseAddress = new Uri(uri);
+   
+            var cunsume_income = hc.GetAsync("GetData");
 
-            user u = new user();
-            
-            var consume = hc.GetAsync("UserLogin?email="+email+"&name"+password);
-            consume.Wait();
-            var test = consume.Result;
+            try {cunsume_income.Wait();}
+            catch (Exception e){}
+
+
+            var test = cunsume_income.Result;
+
+            if (test.IsSuccessStatusCode)
+            {                
+                Console.WriteLine("OK !!");
+                var display = test.Content.ReadAsAsync<IList<UserViewModel>>();
+                list = display.Result;
+                
+                //email = "jeettrivedi08@gmail.com";
+                //password = "jeet";
+                
+                foreach (var x in list)
+                {
+                    if (x.email.Equals(email) && x.password.Equals(password))
+                    {
+                        return RedirectToAction("Index", "Home");
+                    }
+                }    
+            }
+            return RedirectToAction("Login", "Consume");
+
+
+            //hc.BaseAddress = new Uri("https://localhost:44320/Api/Login/UserLogin");
+
+            //user u = new user();
+
+            //var consume = hc.GetAsync("UserLogin?email=" + email + "&name" + password);
+
+            //try
+            //{
+            //    consume.Wait();
+            //}
+
+            //catch (Exception e)
+            //{
+            //    e.StackTrace.ToString();
+            //}
+            //var test = consume.Result;
 
             //if (test.IsSuccessStatusCode)
             //{
@@ -189,15 +205,12 @@ namespace WebApi_BudgeManagementSystem.Controllers
             //return View(u);
             //return RedirectToAction("Display");
 
-            if (test.IsSuccessStatusCode)
-            {
-                return RedirectToAction("Display");
-            }
-           else
-            {
-                return HttpNotFound();
-            }
+            //if (test.IsSuccessStatusCode)
+            //{
+            //    return RedirectToAction("Display");
+            //}
+
+            //return View();
         }
-           
     }
 }
