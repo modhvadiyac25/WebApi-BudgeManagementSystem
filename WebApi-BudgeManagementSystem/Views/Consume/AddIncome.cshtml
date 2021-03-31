@@ -1,0 +1,35 @@
+﻿@model IEnumerable<WebApi_BudgeManagementSystem.ViewModels.IncomeViewModel>
+
+@{
+    ViewBag.Title = "AddIncome";
+}
+
+<h2>AddIncome</h2>
+<form mothod="Post" asp-action="AddIncome" asp-controller="ConsumeController" class="form-group">
+
+    <h1>Binding data into Dropdown list</h1>
+    <div class="form-group">
+        <label asp-for="inc_cat" class="control-label">Income Category</label>
+        <select  style="height:auto" class="dropdown form-control">
+            <option value="" selected disabled> Select Category</option>
+            @foreach (var item in Model)
+            {
+                <option>@item.inc_cat</option>
+            }
+        </select>
+    </div>
+    
+    <div class="form-group">
+        <label asp-for="inc_amount" class="control-label">Add Amount</label>
+        <label asp-for="inc_amount" class="control-label"></label>
+        <input asp-for="inc_amount" class="form-control" />
+        <span asp-validation-for="inc_amount" class="text-danger"></span>
+    </div>
+
+
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary"> Add Income </button>
+        </div>
+</form>
+
+

@@ -31,5 +31,9 @@ namespace WebApi_BudgeManagementSystem.Models
         public virtual DbSet<o_income> o_income { get; set; }
         public virtual DbSet<trasaction> trasactions { get; set; }
         public virtual DbSet<user> users { get; set; }
+
+        public System.Data.Entity.DbSet<WebApi_BudgeManagementSystem.ViewModels.IncomeViewModel> IncomeViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<WebApi_BudgeManagementSystem.ViewModels.ExpenseViewModel> ExpenseViewModels { get; set; }
     }
 }
