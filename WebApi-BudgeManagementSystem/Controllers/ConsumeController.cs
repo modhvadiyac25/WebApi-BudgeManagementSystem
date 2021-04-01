@@ -128,7 +128,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
 
             if (test.IsSuccessStatusCode)
             {
-                return RedirectToAction("Display");
+                return RedirectToAction("Login");
             }
             else
             {
