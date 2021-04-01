@@ -166,8 +166,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
                 var display = test.Content.ReadAsAsync<IList<UserViewModel>>();
                 list = display.Result;
 
-                //email = "jeettrivedi08@gmail.com";
-                //password = "jeet";
+             
                 string x_email = "";
                 string x_pass = "";
                 foreach (var x in list)
@@ -181,11 +180,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
                         return RedirectToAction("Index", "Home");
 
                     }
-                    else {
-                        string e = x.email;
-                        string p = x.password; 
-                        Console.WriteLine(""); 
-                    }
+                     
                 }
                 
             }
