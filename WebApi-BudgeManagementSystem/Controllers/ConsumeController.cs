@@ -137,9 +137,17 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
         [HttpGet]
+        public ActionResult Login()
+        {
+            return View();
+        }
 
+        [HttpPost]
         public ActionResult Login(string email, string password)
         {
+            
+            email = email.TrimStart(' ').TrimEnd(' ');
+            password = password.TrimStart(' ').TrimEnd(' ');
             string uri = "https://localhost:44320/api/webApi/GetData";
             IEnumerable<UserViewModel> list = null; 
             hc.BaseAddress = new Uri(uri);
@@ -157,20 +165,34 @@ namespace WebApi_BudgeManagementSystem.Controllers
                 Console.WriteLine("OK !!");
                 var display = test.Content.ReadAsAsync<IList<UserViewModel>>();
                 list = display.Result;
-                
+
                 //email = "jeettrivedi08@gmail.com";
                 //password = "jeet";
-                
+                string x_email = "";
+                string x_pass = "";
                 foreach (var x in list)
                 {
-                    if (x.email.Equals(email) && x.password.Equals(password))
+                    x_email = x.email.TrimStart(' ').TrimEnd(' ');
+                    x_pass = x.password.TrimStart(' ').TrimEnd(' ');
+
+                    if (x_email.Equals(email) && x_pass.Equals(password))
                     {
+                        Session["email_id"] = email;
                         return RedirectToAction("Index", "Home");
+
                     }
-                }    
+                    else {
+                        string e = x.email;
+                        string p = x.password; 
+                        Console.WriteLine(""); 
+                    }
+                }
+                
             }
             return RedirectToAction("Login", "Consume");
 
+
+            
 
             //hc.BaseAddress = new Uri("https://localhost:44320/Api/Login/UserLogin");
 
@@ -205,12 +227,6 @@ namespace WebApi_BudgeManagementSystem.Controllers
             //return View(u);
             //return RedirectToAction("Display");
 
-            //if (test.IsSuccessStatusCode)
-            //{
-            //    return RedirectToAction("Display");
-            //}
-
-            //return View();
         }
     }
 }

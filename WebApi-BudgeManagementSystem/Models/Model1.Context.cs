@@ -35,5 +35,7 @@ namespace WebApi_BudgeManagementSystem.Models
         public System.Data.Entity.DbSet<WebApi_BudgeManagementSystem.ViewModels.IncomeViewModel> IncomeViewModels { get; set; }
 
         public System.Data.Entity.DbSet<WebApi_BudgeManagementSystem.ViewModels.ExpenseViewModel> ExpenseViewModels { get; set; }
+
+        public System.Data.Entity.DbSet<WebApi_BudgeManagementSystem.ViewModels.UserViewModel> UserViewModels { get; set; }
     }
 }
