@@ -29,13 +29,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             List<income> list = budgetManagerEntities.incomes.ToList();
             return Ok(list);
         }
-        
+
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetExpenseCategory()
         {
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             List<expense> list = budgetManagerEntities.expenses.ToList();
             return Ok(list);
+        }
  
         [System.Web.Http.HttpPost]
         public IHttpActionResult Register(user u)
