@@ -1,0 +1,63 @@
+﻿@model IEnumerable<WebApi_BudgeManagementSystem.Models.trasaction>
+
+@{
+    ViewBag.Title = "ShowTransactions";
+}
+
+<h2>ShowTransactions</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.tdate)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ttime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.t_cat)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tot_inc)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.tot_exp)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.user.fname)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.tdate)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ttime)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.t_cat)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tot_inc)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.tot_exp)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.user.fname)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.tid }) |
+            @Html.ActionLink("Details", "Details", new { id=item.tid }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.tid })
+        </td>
+    </tr>
+}
+
+</table>

@@ -12,12 +12,19 @@ namespace WebApi_BudgeManagementSystem.Controllers
     {
         BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
 
-        
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetData()
         {
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             List<user> list = budgetManagerEntities.users.ToList();
+            return Ok(list);
+        }
+
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult GetAllTransaction()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<trasaction> list = budgetManagerEntities.trasactions.ToList();
             return Ok(list);
         }
 
@@ -38,6 +45,22 @@ namespace WebApi_BudgeManagementSystem.Controllers
             return Ok(list);
         }
  
+       [System.Web.Http.HttpGet]
+        public IHttpActionResult GetOwnIncomeCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<o_income> list = budgetManagerEntities.o_income.ToList();
+            return Ok(list);
+        }
+
+         [System.Web.Http.HttpGet]
+        public IHttpActionResult GetOwnExpenseCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<o_expense> list = budgetManagerEntities.o_expense.ToList();
+            return Ok(list);
+        }
+ 
         [System.Web.Http.HttpPost]
         public IHttpActionResult Register(user u)
         {
@@ -54,5 +77,37 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.SaveChanges();
             return Ok();
         }
+        
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult CreateFirstTransaction(trasaction t)
+        {
+            budgetManagerEntities.trasactions.Add(t);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
+
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddTrasaction(trasaction obj)
+        {
+            budgetManagerEntities.trasactions.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddOwnIncomeCategory(o_income obj)
+        {
+            budgetManagerEntities.o_income.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
+        
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddOwnExpenseCategory(o_expense obj)
+        {
+            budgetManagerEntities.o_expense.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
+    
     }
 }

@@ -15,6 +15,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
         [System.Web.Http.HttpGet]
         public IHttpActionResult UserLogin(string email, string password)
         {
+             
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             user data = budgetManagerEntities.users.Where(x => x.email.Equals(email) && x.password.Equals(password)).SingleOrDefault();
             return Ok(data);
