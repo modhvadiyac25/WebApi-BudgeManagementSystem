@@ -92,6 +92,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.SaveChanges();
             return Ok();
         }
+        
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddOwnExpenseCategory(o_expense obj)
+        {
+            budgetManagerEntities.o_expense.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
     
     }
 }

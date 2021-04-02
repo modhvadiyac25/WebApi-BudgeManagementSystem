@@ -421,6 +421,7 @@
     <Content Include="Views\Consume\Display.cshtml" />
     <Content Include="Views\Consume\ShowTransactions.cshtml" />
     <Content Include="Views\Consume\AddOwnIncome.cshtml" />
+    <Content Include="Views\Consume\AddOwnExpense.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Consume\SendData.cshtml" />

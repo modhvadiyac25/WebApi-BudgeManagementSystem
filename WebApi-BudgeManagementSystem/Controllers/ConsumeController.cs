@@ -95,6 +95,71 @@ namespace WebApi_BudgeManagementSystem.Controllers
 
         }
 
+        [HttpPost]
+        public ActionResult AddOwnExpense(AddOwnExpenseViewModel model)
+        {
+            if (model.flag)
+            {
+                hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddOwnExpenseCategory");
+
+                o_expense obj = new o_expense
+                {
+                    oexp_name = model.oexp_name,
+                    uid = model.uid
+                };
+
+                var consume = hc.PostAsJsonAsync("AddOwnExpenseCategory", obj);
+                consume.Wait();
+                var test = consume.Result;
+                if (test.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AddOwnExpense", "Consume");
+                }
+                return RedirectToAction("AddOwnExpense", "Consume");
+            }
+            else
+            {
+                hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
+                trasaction data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
+                string date = System.DateTime.Now.ToString("dd/MM/yyyy");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+                string cat = model.oexp_name;
+                int amount = 0;
+                int expense = 0;
+                if (data.Equals(null))
+                {
+                    amount += model.exp_amount;
+                }
+                else
+                {
+                    amount = data.tot_inc ;
+                    expense = data.tot_exp + model.exp_amount;
+                } 
+                int userid = model.uid; 
+                trasaction tObj = new trasaction
+                {
+                    tdate = date,
+                    ttime = time,
+                    t_cat = cat,
+                    tot_inc = amount,
+                    tot_exp = expense,
+                    uid = userid
+
+                }; 
+                var consume = hc.PostAsJsonAsync("AddTrasaction", tObj);
+                consume.Wait(); 
+                var test = consume.Result; 
+                if (test.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AddOwnExpense", "Consume"); 
+                }
+                else
+                {
+                    return RedirectToAction("AddOwnExpense", "Consume");
+                } 
+            } 
+        }
+
 
         [HttpGet]
         public ActionResult AddOwnIncome()
@@ -127,7 +192,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
          [HttpGet]
-        public ActionResult AddOwnExpence()
+        public ActionResult AddOwnExpense()
         {
             string uri = "https://localhost:44320/api/webApi/GetOwnExpenseCategory";
             
@@ -486,43 +551,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
                 
             }
             return RedirectToAction("Login", "Consume");
-
-
-            
-
-            //hc.BaseAddress = new Uri("https://localhost:44320/Api/Login/UserLogin");
-
-            //user u = new user();
-
-            //var consume = hc.GetAsync("UserLogin?email=" + email + "&name" + password);
-
-            //try
-            //{
-            //    consume.Wait();
-            //}
-
-            //catch (Exception e)
-            //{
-            //    e.StackTrace.ToString();
-            //}
-            //var test = consume.Result;
-
-            //if (test.IsSuccessStatusCode)
-            //{
-            //    var display = test.Content.ReadAsAsync<user>();
-            //    try
-            //    {
-            //        display.Wait();
-            //        u = display.Result;
-            //    }
-            //    catch (AggregateException e)
-            //    {
-            //        Debug.WriteLine(e.ToString());
-            //    }
-            //}
-            //return View(u);
-            //return RedirectToAction("Display");
-
+              
         }
     }
 }
