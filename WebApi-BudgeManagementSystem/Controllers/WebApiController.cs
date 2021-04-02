@@ -12,7 +12,6 @@ namespace WebApi_BudgeManagementSystem.Controllers
     {
         BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
 
-        
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetData()
         {
@@ -45,6 +44,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.SaveChanges();
             return Ok();
  
+        }
+
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddIncome(trasaction obj)
+        {
+            budgetManagerEntities.trasactions.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
         }
     }
 }

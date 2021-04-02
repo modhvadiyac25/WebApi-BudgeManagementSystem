@@ -7,18 +7,18 @@ using System.Web;
 using System.Web.Mvc;
 using WebApi_BudgeManagementSystem.Models;
 using WebApi_BudgeManagementSystem.ViewModels;
- 
+
 
 namespace WebApi_BudgeManagementSystem.Controllers
 {
     public class ConsumeController : Controller
     {
+        BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
         HttpClient hc = new HttpClient();
 
-        // GET: Consume
+         
         public ActionResult Index()
         {
- 
             return View();
         }
 
@@ -48,17 +48,66 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
         [HttpPost]
-        public ActionResult AddIncome(IncomeViewModel model)
+        public ActionResult AddIncome(SelectIncomeCategoryViewModel model)
         {
 
-            return View();
-        }
+            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddIncome");
+             
 
+            trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderBy(x => x.tdate).FirstOrDefault();
+
+            string date = System.DateTime.Now.ToString("dd/MM/yyyy");
+            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+            string cat = model.inc_cat;
+
+            int amount = 0;
+            int expense = 0;
+
+            if (data.Equals(null))
+            {
+                amount += model.inc_amount;
+            }
+            {
+                amount = data.tot_inc + model.inc_amount;
+                expense = data.tot_exp;
+            }
+
+            int userid = model.uid;
+
+            trasaction tObj = new trasaction
+            {
+                tdate = date,
+                ttime = time,
+                t_cat = cat,
+                tot_inc = amount,
+                tot_exp = expense,
+                uid = userid
+
+            };
+
+            var consume = hc.PostAsJsonAsync("AddIncome", tObj);
+            consume.Wait();
+             
+
+            var test = consume.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+                return RedirectToAction("AddIncome", "Consume");
+            }
+            else
+            {
+                return RedirectToAction("AddIncome", "Consume");
+            }
+            return RedirectToAction("AddIncome", "Consume");
+        }
+    
         [HttpGet]
         public ActionResult AddIncome()
         {
             string uri = "https://localhost:44320/api/webApi/GetIncomeCategory";
-            IEnumerable<IncomeViewModel> list = null;
+            // IEnumerable<IncomeViewModel> list = null;
+            var model = new SelectIncomeCategoryViewModel{ };
             hc.BaseAddress = new Uri(uri);
 
             var cunsume_income = hc.GetAsync("GetIncomeCategory");
@@ -72,9 +121,13 @@ namespace WebApi_BudgeManagementSystem.Controllers
             {
                 Console.WriteLine("OK !!");
                 var display = test.Content.ReadAsAsync<IList<IncomeViewModel>>();
-                list = display.Result;
                 
-                return View(list);
+                foreach (var category in display.Result)
+                {
+                    model.categories.Add(category.inc_cat);
+                }
+
+                return View(model);
             }
             return View();
 
@@ -140,7 +193,17 @@ namespace WebApi_BudgeManagementSystem.Controllers
         public ActionResult Login()
         {
             return View();
+        }  
+        
+        [HttpGet]
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            Session.Abandon();
+            return View("Login");
         }
+
+        
 
         [HttpPost]
         public ActionResult Login(string email, string password)
@@ -177,6 +240,8 @@ namespace WebApi_BudgeManagementSystem.Controllers
                     if (x_email.Equals(email) && x_pass.Equals(password))
                     {
                         Session["email_id"] = email;
+                        Session["uid"] = x.uid;
+                        Session["fullname"] = x.fname.ToString() + " " + x.lname;
                         return RedirectToAction("Index", "Home");
 
                     }

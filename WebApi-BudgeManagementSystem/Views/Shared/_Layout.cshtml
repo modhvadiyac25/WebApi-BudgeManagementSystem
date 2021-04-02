@@ -24,9 +24,20 @@
                     <li>@Html.ActionLink("Add Income", "AddIncome", "Consume", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Add Expense", "AddExpense", "Consume", new { area = "" }, null)</li>
                     <li>@Html.ActionLink("Add Your Own Category", "Index", "Help", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Login", "Login", "Consume", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("Logout", "Index", "Help", new { area = "" }, null)</li>
-                    <li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>
+
+                    @{ if (HttpContext.Current.Session["email_id"] != null)
+                        {
+                            <li>@Html.ActionLink("Logout", "Logout", "Consume", new { area = "" }, null)</li>
+                        }
+                        else
+                        {
+                            <li>@Html.ActionLink("Sign In", "Login", "Consume", new { area = "" }, null)</li>
+                            <li>@Html.ActionLink("Sign up", "SendData", "Consume", new { area = "" }, null)</li>
+                        }
+                    }
+
+
+                    @*<li>@Html.ActionLink("API", "Index", "Help", new { area = "" }, null)</li>*@
                 </ul>
             </div>
         </div>
