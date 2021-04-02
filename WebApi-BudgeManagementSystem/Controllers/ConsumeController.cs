@@ -87,8 +87,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
 
             var consume = hc.PostAsJsonAsync("AddIncome", tObj);
             consume.Wait();
-             
-
+            
             var test = consume.Result;
 
             if (test.IsSuccessStatusCode)
@@ -179,9 +178,38 @@ namespace WebApi_BudgeManagementSystem.Controllers
             consume.Wait();
             var test = consume.Result;
 
+            
+
+
+
+
+
             if (test.IsSuccessStatusCode)
             {
-                return RedirectToAction("Login");
+                string date = System.DateTime.Now.ToString("dd/MM/yyyy");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+
+                trasaction t = new trasaction
+                {
+                    tdate = date,
+                    ttime = time,
+                    t_cat = "Default",
+                    tot_inc = 0,
+                    tot_exp = 0,
+                    uid = budgetManagerEntities.users.Where(m => m.email.Equals(u.email)).Select(x => x.uid).SingleOrDefault()
+
+                };
+                HttpClient hc1 = new HttpClient();
+                hc1.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/CreateFirstTransaction");
+                var consume_transaction = hc1.PostAsJsonAsync("CreateFirstTransaction", t);
+                consume_transaction.Wait();
+                var test1 = consume_transaction.Result;
+
+                if (test.IsSuccessStatusCode) {
+                    return RedirectToAction("Login");
+                }
+
+                    return RedirectToAction("Login");
             }
             else
             {

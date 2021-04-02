@@ -45,6 +45,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             return Ok();
  
         }
+        
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult CreateFirstTransaction(trasaction t)
+        {
+            budgetManagerEntities.trasactions.Add(t);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
 
         [System.Web.Http.HttpPost]
         public IHttpActionResult AddIncome(trasaction obj)
