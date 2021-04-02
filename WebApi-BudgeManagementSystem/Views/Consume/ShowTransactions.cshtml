@@ -4,35 +4,40 @@
     ViewBag.Title = "ShowTransactions";
 }
 
-<h2>ShowTransactions</h2>
-
-<p>
+<h2>Show Transactions</h2>
+<h3>@HttpContext.Current.Session["fullname"].ToString()</h3>
+@*<p>
     @Html.ActionLink("Create New", "Create")
-</p>
+</p>*@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.tdate)
+            Date
+            @*@Html.DisplayNameFor(model => model.tdate)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ttime)
+            Time
+            @*@Html.DisplayNameFor(model => model.ttime)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.t_cat)
+            Transaction Category
+            @*@Html.DisplayNameFor(model => model.t_cat)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tot_inc)
+            Total Income
+            @*@Html.DisplayNameFor(model => model.tot_inc)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.tot_exp)
+            Total Expense
+            @*@Html.DisplayNameFor(model => model.tot_exp)*@
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.user.fname)
-        </th>
-        <th></th>
+        
+         
     </tr>
 
 @foreach (var item in Model) {
+    if (item.uid == Int32.Parse(HttpContext.Current.Session["uid"].ToString())) {
+    
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.tdate)
@@ -49,15 +54,13 @@
         <td>
             @Html.DisplayFor(modelItem => item.tot_exp)
         </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.user.fname)
-        </td>
-        <td>
+        @*<td>
             @Html.ActionLink("Edit", "Edit", new { id=item.tid }) |
             @Html.ActionLink("Details", "Details", new { id=item.tid }) |
             @Html.ActionLink("Delete", "Delete", new { id=item.tid })
-        </td>
+        </td>*@
     </tr>
+    }
 }
 
 </table>

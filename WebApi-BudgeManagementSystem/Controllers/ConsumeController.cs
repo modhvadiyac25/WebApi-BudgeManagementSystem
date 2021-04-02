@@ -291,7 +291,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             string cat = model.inc_cat;
             int amount = 0;
             int expense = 0;
-            if (data.Equals(null))
+            if (data == null)
             {
                 amount += model.inc_amount;
             }
