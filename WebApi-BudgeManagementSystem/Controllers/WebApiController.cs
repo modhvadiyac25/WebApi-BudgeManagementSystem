@@ -20,6 +20,14 @@ namespace WebApi_BudgeManagementSystem.Controllers
             return Ok(list);
         }
 
+        [System.Web.Http.HttpGet]
+        public IHttpActionResult GetAllTransaction()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<trasaction> list = budgetManagerEntities.trasactions.ToList();
+            return Ok(list);
+        }
+
  
         [System.Web.Http.HttpGet]
         public IHttpActionResult GetIncomeCategory()
@@ -34,6 +42,22 @@ namespace WebApi_BudgeManagementSystem.Controllers
         {
             budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
             List<expense> list = budgetManagerEntities.expenses.ToList();
+            return Ok(list);
+        }
+ 
+       [System.Web.Http.HttpGet]
+        public IHttpActionResult GetOwnIncomeCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<o_income> list = budgetManagerEntities.o_income.ToList();
+            return Ok(list);
+        }
+
+         [System.Web.Http.HttpGet]
+        public IHttpActionResult GetOwnExpenseCategory()
+        {
+            budgetManagerEntities.Configuration.ProxyCreationEnabled = false;
+            List<o_expense> list = budgetManagerEntities.o_expense.ToList();
             return Ok(list);
         }
  
@@ -55,11 +79,19 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
         [System.Web.Http.HttpPost]
-        public IHttpActionResult AddIncome(trasaction obj)
+        public IHttpActionResult AddTrasaction(trasaction obj)
         {
             budgetManagerEntities.trasactions.Add(obj);
             budgetManagerEntities.SaveChanges();
             return Ok();
         }
+        [System.Web.Http.HttpPost]
+        public IHttpActionResult AddOwnIncomeCategory(o_income obj)
+        {
+            budgetManagerEntities.o_income.Add(obj);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
+        }
+    
     }
 }

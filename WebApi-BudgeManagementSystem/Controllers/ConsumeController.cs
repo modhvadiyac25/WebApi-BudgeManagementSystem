@@ -16,19 +16,184 @@ namespace WebApi_BudgeManagementSystem.Controllers
         BudgetManagerEntities budgetManagerEntities = new BudgetManagerEntities();
         HttpClient hc = new HttpClient();
 
-         
         public ActionResult Index()
         {
             return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddOwnIncome(AddOwnIncomeViewModel model)
+        {
+            if (model.flag)
+            {
+                hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddOwnIncomeCategory");
+
+                o_income obj = new o_income
+                {
+                    oinc_name = model.oinc_name,
+                    uid = model.uid
+                };
+
+                var consume = hc.PostAsJsonAsync("AddOwnIncomeCategory", obj);
+                consume.Wait();
+                var test = consume.Result;
+                if (test.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AddOwnIncome", "Consume");
+                }
+                return RedirectToAction("AddOwnIncome", "Consume");
+            }
+            else
+            {
+                hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
+                trasaction data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
+                string date = System.DateTime.Now.ToString("dd/MM/yyyy");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+                string cat = model.oinc_name;
+                int amount = 0;
+                int expense = 0;
+                if (data.Equals(null))
+                {
+                    amount += model.inc_amount;
+                }
+                else
+                {
+                    amount = data.tot_inc + model.inc_amount;
+                    expense = data.tot_exp;
+                }
+
+                int userid = model.uid;
+
+                trasaction tObj = new trasaction
+                {
+                    tdate = date,
+                    ttime = time,
+                    t_cat = cat,
+                    tot_inc = amount,
+                    tot_exp = expense,
+                    uid = userid
+
+                };
+
+                var consume = hc.PostAsJsonAsync("AddTrasaction", tObj);
+                consume.Wait();
+
+                var test = consume.Result;
+
+                if (test.IsSuccessStatusCode)
+                {
+                    return RedirectToAction("AddOwnIncome", "Consume");
+
+                }
+                else
+                {
+                    return RedirectToAction("AddOwnIncome", "Consume");
+                }
+
+            }
+            
+
+        }
+
+
+        [HttpGet]
+        public ActionResult AddOwnIncome()
+        {
+            string uri = "https://localhost:44320/api/webApi/GetOwnIncomeCategory";
+            
+            var model = new AddOwnIncomeViewModel{ };
+            hc.BaseAddress = new Uri(uri);
+
+            var cunsume_income = hc.GetAsync("GetOwnIncomeCategory");
+
+            try { cunsume_income.Wait(); }
+            catch (Exception e) { }
+
+            var test = cunsume_income.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+                Console.WriteLine("OK !!");
+                var display = test.Content.ReadAsAsync<IList<o_income>>();
+
+                foreach (var category in display.Result)
+                {
+                    model.categories.Add(category.oinc_name);
+                }
+
+                return View(model);
+            }
+            return View();
+        }
+
+         [HttpGet]
+        public ActionResult AddOwnExpence()
+        {
+            string uri = "https://localhost:44320/api/webApi/GetOwnExpenseCategory";
+            
+            var model = new AddOwnExpenseViewModel{ };
+            hc.BaseAddress = new Uri(uri);
+
+            var cunsume_income = hc.GetAsync("GetOwnExpenseCategory");
+
+            try { cunsume_income.Wait(); }
+            catch (Exception e) { }
+
+            var test = cunsume_income.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+                Console.WriteLine("OK !!");
+                var display = test.Content.ReadAsAsync<IList<o_expense>>();
+
+                foreach (var category in display.Result)
+                {
+                    model.categories.Add(category.oexp_name);
+                }
+
+                return View(model);
+            }
+            return View();
+        }
+
+         
+        [HttpGet]
+        public ActionResult AddIncome()
+        {
+            string uri = "https://localhost:44320/api/webApi/GetIncomeCategory";
+            var model = new SelectIncomeCategoryViewModel { };
+            hc.BaseAddress = new Uri(uri);
+
+            var cunsume_income = hc.GetAsync("GetIncomeCategory");
+
+            try { cunsume_income.Wait(); }
+            catch (Exception e) { }
+
+            var test = cunsume_income.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+                Console.WriteLine("OK !!");
+                var display = test.Content.ReadAsAsync<IList<IncomeViewModel>>();
+
+                foreach (var category in display.Result)
+                {
+                    model.categories.Add(category.inc_cat);
+                }
+
+                return View(model);
+            }
+            return View();
+
         }
 
         [HttpGet]
         public ActionResult AddExpense()
         {
             string uri = "https://localhost:44320/api/webApi/GetExpenseCategory";
-            IEnumerable<ExpenseViewModel> list = null;
+            //IEnumerable<ExpenseViewModel> list = null;
             hc.BaseAddress = new Uri(uri);
-
+            var model = new SelectExpenseCategoryViewModel { };
             var cunsume_expense = hc.GetAsync("GetExpenseCategory");
 
             try { cunsume_expense.Wait(); }
@@ -40,9 +205,13 @@ namespace WebApi_BudgeManagementSystem.Controllers
             {
                 Console.WriteLine("OK !!");
                 var display = test.Content.ReadAsAsync<IList<ExpenseViewModel>>();
-                list = display.Result;
+                
+                foreach (var category in display.Result)
+                {
+                    model.categories.Add(category.exp_cat);
+                }
 
-                return View(list);
+                return View(model);
             }
             return View();
         }
@@ -50,26 +219,74 @@ namespace WebApi_BudgeManagementSystem.Controllers
         [HttpPost]
         public ActionResult AddIncome(SelectIncomeCategoryViewModel model)
         {
-
-            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddIncome");
-             
-
-            trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderBy(x => x.tdate).FirstOrDefault();
-
+            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
+            trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
             string date = System.DateTime.Now.ToString("dd/MM/yyyy");
             string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
             string cat = model.inc_cat;
+            int amount = 0;
+            int expense = 0;
+            if (data.Equals(null))
+            {
+                amount += model.inc_amount;
+            }
+            else
+            {
+                amount = data.tot_inc + model.inc_amount;
+                expense = data.tot_exp;
+            }
+
+            int userid = model.uid;
+
+            trasaction tObj = new trasaction{
+                tdate = date,
+                ttime = time,
+                t_cat = cat,
+                tot_inc = amount,
+                tot_exp = expense,
+                uid = userid
+
+            };
+
+            var consume = hc.PostAsJsonAsync("AddTrasaction", tObj);
+            consume.Wait();
+            
+            var test = consume.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+               return RedirectToAction("AddIncome", "Consume");
+                 
+            }
+            else
+            {
+                return RedirectToAction("AddIncome", "Consume");
+            } 
+        } 
+
+       [HttpPost]
+        public ActionResult AddExpense(SelectExpenseCategoryViewModel model)
+        {
+
+            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
+             
+
+            trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
+
+            string date = System.DateTime.Now.ToString("dd/MM/yyyy");
+            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+            string cat = model.exp_cat;
 
             int amount = 0;
             int expense = 0;
 
             if (data.Equals(null))
             {
-                amount += model.inc_amount;
+                amount += model.exp_amount;
             }
             {
-                amount = data.tot_inc + model.inc_amount;
-                expense = data.tot_exp;
+                amount = data.tot_inc;
+                expense = data.tot_exp + model.exp_amount; 
             }
 
             int userid = model.uid;
@@ -85,52 +302,20 @@ namespace WebApi_BudgeManagementSystem.Controllers
 
             };
 
-            var consume = hc.PostAsJsonAsync("AddIncome", tObj);
+            var consume = hc.PostAsJsonAsync("AddTrasaction", tObj);
             consume.Wait();
             
             var test = consume.Result;
 
             if (test.IsSuccessStatusCode)
             {
-                return RedirectToAction("AddIncome", "Consume");
+                return RedirectToAction("AddExpense", "Consume");
             }
-            else
-            {
-                return RedirectToAction("AddIncome", "Consume");
-            }
-            return RedirectToAction("AddIncome", "Consume");
+            
+            return RedirectToAction("AddExpense", "Consume");
         }
     
-        [HttpGet]
-        public ActionResult AddIncome()
-        {
-            string uri = "https://localhost:44320/api/webApi/GetIncomeCategory";
-            // IEnumerable<IncomeViewModel> list = null;
-            var model = new SelectIncomeCategoryViewModel{ };
-            hc.BaseAddress = new Uri(uri);
-
-            var cunsume_income = hc.GetAsync("GetIncomeCategory");
-
-            try {cunsume_income.Wait();}
-            catch (Exception e){}
-
-            var test = cunsume_income.Result;
-
-            if (test.IsSuccessStatusCode)
-            {
-                Console.WriteLine("OK !!");
-                var display = test.Content.ReadAsAsync<IList<IncomeViewModel>>();
-                
-                foreach (var category in display.Result)
-                {
-                    model.categories.Add(category.inc_cat);
-                }
-
-                return View(model);
-            }
-            return View();
-
-        }
+       
 
 
         [HttpGet]
@@ -163,6 +348,36 @@ namespace WebApi_BudgeManagementSystem.Controllers
  
             return View();
         }
+        
+        [HttpGet]
+        public ActionResult ShowTransactions()
+        {
+            
+            string uri = "https://localhost:44320/api/webApi/GetAllTransaction";
+            List<trasaction> list = new List<trasaction>();
+            hc.BaseAddress = new Uri(uri);
+            var cunsume = hc.GetAsync("GetAllTransaction");
+
+            try
+            {
+                cunsume.Wait();
+            }
+            catch (Exception e)
+            {
+                e.StackTrace.ToString();  
+            } 
+            var test = cunsume.Result;
+            
+            if (test.IsSuccessStatusCode)
+            {
+                Console.WriteLine("OK !!");
+                var display = test.Content.ReadAsAsync<List<trasaction>>();
+                list = display.Result;
+                return View(list);
+            }
+ 
+            return View();
+        }
 
         [HttpGet]
         public ActionResult SendData()
@@ -176,14 +391,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/Register");
             var consume = hc.PostAsJsonAsync("Register", u);
             consume.Wait();
-            var test = consume.Result;
-
-            
-
-
-
-
-
+            var test = consume.Result; 
             if (test.IsSuccessStatusCode)
             {
                 string date = System.DateTime.Now.ToString("dd/MM/yyyy");
