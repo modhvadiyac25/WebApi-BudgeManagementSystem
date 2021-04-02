@@ -414,14 +414,19 @@
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
+ 
+    <Content Include="Views\Consume\Display.cshtml" />
+ 
     <Content Include="Views\Consume\AddIncome.cshtml" />
     <Content Include="wwwroot\lib\jquery\jquery.min.map" />
     <Content Include="wwwroot\lib\jquery\jquery.slim.min.map" />
     <Content Include="Views\Consume\AddExpense.cshtml" />
+ 
     <Content Include="Views\Consume\Display.cshtml" />
     <Content Include="Views\Consume\ShowTransactions.cshtml" />
     <Content Include="Views\Consume\AddOwnIncome.cshtml" />
     <Content Include="Views\Consume\AddOwnExpense.cshtml" />
+ 
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Consume\SendData.cshtml" />

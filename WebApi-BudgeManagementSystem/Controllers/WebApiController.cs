@@ -67,7 +67,15 @@ namespace WebApi_BudgeManagementSystem.Controllers
             budgetManagerEntities.users.Add(u);
             budgetManagerEntities.SaveChanges();
             return Ok();
- 
+        }
+
+        [System.Web.Http.HttpPost]
+
+        public IHttpActionResult GetOwnIncome(o_income oinc)
+        {
+            budgetManagerEntities.o_income.Add(oinc);
+            budgetManagerEntities.SaveChanges();
+            return Ok();
         }
         
         [System.Web.Http.HttpPost]
