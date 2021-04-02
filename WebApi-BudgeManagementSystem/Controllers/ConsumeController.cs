@@ -48,7 +48,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
                 hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
                 trasaction data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
                 string date = System.DateTime.Now.ToString("dd/MM/yyyy");
-                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HHï¿½:ï¿½mmï¿½:ï¿½ss ï¿½GMTï¿½");
                 string cat = model.oinc_name;
                 int amount = 0;
                 int expense = 0;
@@ -122,7 +122,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
                 hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
                 trasaction data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
                 string date = System.DateTime.Now.ToString("dd/MM/yyyy");
-                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HHï¿½:ï¿½mmï¿½:ï¿½ss ï¿½GMTï¿½");
                 string cat = model.oexp_name;
                 int amount = 0;
                 int expense = 0;
@@ -287,7 +287,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/AddTrasaction");
             trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
             string date = System.DateTime.Now.ToString("dd/MM/yyyy");
-            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HHï¿½:ï¿½mmï¿½:ï¿½ss ï¿½GMTï¿½");
             string cat = model.inc_cat;
             int amount = 0;
             int expense = 0;
@@ -339,7 +339,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             trasaction  data = budgetManagerEntities.trasactions.Where(x => x.uid.Equals(model.uid)).OrderByDescending(x => x.ttime).FirstOrDefault();
 
             string date = System.DateTime.Now.ToString("dd/MM/yyyy");
-            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+            string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HHï¿½:ï¿½mmï¿½:ï¿½ss ï¿½GMTï¿½");
             string cat = model.exp_cat;
 
             int amount = 0;
@@ -460,7 +460,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             if (test.IsSuccessStatusCode)
             {
                 string date = System.DateTime.Now.ToString("dd/MM/yyyy");
-                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HH’:’mm’:’ss ‘GMT’");
+                string time = System.DateTime.Now.ToString("ddd, dd MMM yyy HHï¿½:ï¿½mmï¿½:ï¿½ss ï¿½GMTï¿½");
 
                 trasaction t = new trasaction
                 {
@@ -491,6 +491,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
         [HttpGet]
+ 
         public ActionResult Login()
         {
             return View();
@@ -503,9 +504,7 @@ namespace WebApi_BudgeManagementSystem.Controllers
             Session.Abandon();
             return View("Login");
         }
-
-        
-
+ 
         [HttpPost]
         public ActionResult Login(string email, string password)
         {
