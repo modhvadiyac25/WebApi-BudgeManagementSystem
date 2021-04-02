@@ -137,6 +137,30 @@ namespace WebApi_BudgeManagementSystem.Controllers
         }
 
         [HttpGet]
+        public ActionResult AddOwnIncome()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult AddOwnIncome(o_income oinc)
+        {
+            hc.BaseAddress = new Uri("https://localhost:44320/Api/WebApi/GetOwnIncome");
+            var consume = hc.PostAsJsonAsync("GetOwnIncome", oinc);
+            consume.Wait();
+            var test = consume.Result;
+
+            if (test.IsSuccessStatusCode)
+            {
+                return RedirectToAction("Display");
+            }
+            else
+            {
+                return HttpNotFound();
+            }
+        }
+
+        [HttpGet]
 
         public ActionResult Login(string email, string password)
         {
